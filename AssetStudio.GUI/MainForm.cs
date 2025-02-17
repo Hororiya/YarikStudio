@@ -1221,12 +1221,13 @@ namespace AssetStudio.GUI
                     else if (m_Mesh.m_Normals.Length == m_Mesh.m_VertexCount * 4)
                         count = 4;
                     normalData = new OpenTK.Mathematics.Vector3[m_Mesh.m_VertexCount];
-                    for (int n = 0; n < m_Mesh.m_VertexCount; n++)
+                    for (int n = 0; n < m_Mesh.m_VertexCount; n++)//Kh0n5u Debug1
                     {
                         normalData[n] = new OpenTK.Mathematics.Vector3(
                             m_Mesh.m_Normals[n * count],
                             m_Mesh.m_Normals[n * count + 1],
                             m_Mesh.m_Normals[n * count + 2]);
+                        //0.5f, 0.5f, 1.0f);
                     }
                 }
                 else
@@ -1459,7 +1460,7 @@ namespace AssetStudio.GUI
         {
             if (InvokeRequired)
             {
-                
+
                 var result = BeginInvoke(new Action(() => { progressBar1.Value = value; }));
                 result.AsyncWaitHandle.WaitOne();
             }
@@ -2955,5 +2956,10 @@ namespace AssetStudio.GUI
             }
         }
         #endregion
+
+        private void specifyGame_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

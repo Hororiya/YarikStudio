@@ -66,7 +66,7 @@ namespace AssetStudio.GUI
             tableLayoutPanel2.Name = "tableLayoutPanel2";
             tableLayoutPanel2.RowCount = 1;
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel2.Size = new System.Drawing.Size(518, 29);
+            tableLayoutPanel2.Size = new System.Drawing.Size(518, 34);
             tableLayoutPanel2.TabIndex = 3;
             // 
             // loadAssetMap
@@ -74,7 +74,7 @@ namespace AssetStudio.GUI
             loadAssetMap.Dock = DockStyle.Fill;
             loadAssetMap.Location = new System.Drawing.Point(3, 3);
             loadAssetMap.Name = "loadAssetMap";
-            loadAssetMap.Size = new System.Drawing.Size(114, 23);
+            loadAssetMap.Size = new System.Drawing.Size(114, 28);
             loadAssetMap.TabIndex = 0;
             loadAssetMap.Text = "Load AssetMap";
             loadAssetMap.UseVisualStyleBackColor = true;
@@ -85,7 +85,7 @@ namespace AssetStudio.GUI
             clear.Dock = DockStyle.Fill;
             clear.Location = new System.Drawing.Point(123, 3);
             clear.Name = "clear";
-            clear.Size = new System.Drawing.Size(54, 23);
+            clear.Size = new System.Drawing.Size(54, 28);
             clear.TabIndex = 1;
             clear.Text = "Clear";
             clear.UseVisualStyleBackColor = true;
@@ -96,7 +96,7 @@ namespace AssetStudio.GUI
             loadSelected.Dock = DockStyle.Fill;
             loadSelected.Location = new System.Drawing.Point(183, 3);
             loadSelected.Name = "loadSelected";
-            loadSelected.Size = new System.Drawing.Size(114, 23);
+            loadSelected.Size = new System.Drawing.Size(114, 28);
             loadSelected.TabIndex = 2;
             loadSelected.Text = "Load Selected";
             loadSelected.UseVisualStyleBackColor = true;
@@ -107,7 +107,7 @@ namespace AssetStudio.GUI
             exportSelected.Dock = DockStyle.Fill;
             exportSelected.Location = new System.Drawing.Point(303, 3);
             exportSelected.Name = "exportSelected";
-            exportSelected.Size = new System.Drawing.Size(212, 23);
+            exportSelected.Size = new System.Drawing.Size(212, 28);
             exportSelected.TabIndex = 3;
             exportSelected.Text = "Export Selected";
             exportSelected.UseVisualStyleBackColor = true;
@@ -120,11 +120,10 @@ namespace AssetStudio.GUI
             assetDataGridView.AllowUserToResizeRows = false;
             assetDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             assetDataGridView.Dock = DockStyle.Fill;
-            assetDataGridView.Location = new System.Drawing.Point(3, 73);
+            assetDataGridView.Location = new System.Drawing.Point(3, 83);
             assetDataGridView.Name = "assetDataGridView";
             assetDataGridView.ReadOnly = true;
-            assetDataGridView.RowTemplate.Height = 25;
-            assetDataGridView.Size = new System.Drawing.Size(518, 263);
+            assetDataGridView.Size = new System.Drawing.Size(518, 298);
             assetDataGridView.TabIndex = 2;
             assetDataGridView.VirtualMode = true;
             assetDataGridView.CellValueNeeded += AssetDataGridView_CellValueNeeded;
@@ -138,13 +137,13 @@ namespace AssetStudio.GUI
             tableLayoutPanel1.Controls.Add(assetDataGridView, 0, 2);
             tableLayoutPanel1.Controls.Add(tableLayoutPanel2, 0, 0);
             tableLayoutPanel1.Controls.Add(tableLayoutPanel3, 0, 1);
-            tableLayoutPanel1.Location = new System.Drawing.Point(12, 12);
+            tableLayoutPanel1.Location = new System.Drawing.Point(12, 14);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 3;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle());
-            tableLayoutPanel1.Size = new System.Drawing.Size(524, 333);
+            tableLayoutPanel1.Size = new System.Drawing.Size(524, 377);
             tableLayoutPanel1.TabIndex = 3;
             // 
             // tableLayoutPanel3
@@ -161,11 +160,11 @@ namespace AssetStudio.GUI
             tableLayoutPanel3.Controls.Add(containerTextBox, 0, 0);
             tableLayoutPanel3.Controls.Add(typeTextBox, 4, 0);
             tableLayoutPanel3.Dock = DockStyle.Fill;
-            tableLayoutPanel3.Location = new System.Drawing.Point(3, 38);
+            tableLayoutPanel3.Location = new System.Drawing.Point(3, 43);
             tableLayoutPanel3.Name = "tableLayoutPanel3";
             tableLayoutPanel3.RowCount = 1;
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel3.Size = new System.Drawing.Size(518, 29);
+            tableLayoutPanel3.Size = new System.Drawing.Size(518, 34);
             tableLayoutPanel3.TabIndex = 4;
             // 
             // sourceTextBox
@@ -220,9 +219,9 @@ namespace AssetStudio.GUI
             // 
             // AssetBrowser
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(548, 357);
+            ClientSize = new System.Drawing.Size(548, 405);
             Controls.Add(tableLayoutPanel1);
             Name = "AssetBrowser";
             ShowIcon = false;

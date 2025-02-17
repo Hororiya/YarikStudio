@@ -1,0 +1,84 @@
+diff --git a/AssetStudio/BundleFile.cs b/AssetStudio/BundleFile.cs
+index 86c306f..a59ee47 100644
+--- a/AssetStudio/BundleFile.cs
++++ b/AssetStudio/BundleFile.cs
+@@ -586,7 +586,7 @@ namespace AssetStudio
+                                 {
+                                     NetEaseUtils.DecryptWithHeader(compressedBytesSpan);
+                                 }
+-                                if (Game.Type.IsArknightsEndfield() && i == 0)
++                                if (Game.Type.IsArknightsEndfield() && i == 0 && compressedBytesSpan[..32].Count((byte)0xa6) > 5)
+                                 {
+                                     FairGuardUtils.Decrypt(compressedBytesSpan);
+                                 }
+@@ -622,7 +622,7 @@ namespace AssetStudio
+                             try
+                             {
+                                 reader.Read(compressedBytesSpan);
+-                                if (i == 0)
++                                if (i == 0 && compressedBytesSpan[..32].Count((byte)0xa6) > 5)
+                                 {
+                                     FairGuardUtils.Decrypt(compressedBytesSpan);
+                                 }
+diff --git a/AssetStudio/Crypto/FairGuardUtils.cs b/AssetStudio/Crypto/FairGuardUtils.cs
+index 23a53a5..6e9e7f1 100644
+--- a/AssetStudio/Crypto/FairGuardUtils.cs
++++ b/AssetStudio/Crypto/FairGuardUtils.cs
+@@ -11,11 +11,11 @@ namespace AssetStudio
+             Logger.Verbose($"Attempting to decrypt block with FairGuard encryption...");
+ 
+             var encryptedOffset = 0;
+-            var encryptedSize = bytes.Length > 0x500 ? 0x500 : bytes.Length;
++            var encryptedSize = Math.Min(0x500, bytes.Length);
+ 
+             if (encryptedSize < 0x20)
+             {
+-                Logger.Verbose($"block size is less that minimum, skipping...");
++                Logger.Verbose("block size is less that minimum, skipping...");
+                 return;
+             }
+ 
+@@ -27,11 +27,20 @@ namespace AssetStudio
+                 encrypted[i] ^= 0xA6;
+             }
+ 
++            // old
++            /*
+             var seedPart0 = (uint)(encryptedInts[2] ^ 0x1274CBEC ^ encryptedInts[6] ^ 0x3F72EAF3);
+             var seedPart1 = (uint)(encryptedInts[3] ^ 0xBE482704 ^ encryptedInts[0] ^ encryptedSize);
+             var seedPart2 = (uint)(encryptedInts[1] ^ encryptedSize ^ encryptedInts[5] ^ 0x753BDCAA);
+             var seedPart3 = (uint)(encryptedInts[0] ^ 0x82C57E3C ^ encryptedInts[7] ^ 0xE3D947D3);
+             var seedPart4 = (uint)(encryptedInts[4] ^ 0x6F2A7347 ^ encryptedInts[7] ^ 0x4736C714);
++            */
++
++            var seedPart0 = (uint)(encryptedInts[2] ^ encryptedInts[6] ^ 0x226a61b9);
++            var seedPart1 = (uint)(encryptedInts[3] ^ encryptedInts[0] ^ 0x7a39d018 ^ encryptedSize);
++            var seedPart2 = (uint)(encryptedInts[1] ^ encryptedInts[5] ^ 0x18f6d8aa ^ encryptedSize);
++            var seedPart3 = (uint)(encryptedInts[0] ^ encryptedInts[7] ^ 0xaa255fb1);
++            var seedPart4 = (uint)(encryptedInts[4] ^ encryptedInts[7] ^ 0xf78dd8eb);
+ 
+             var seedInts = new uint[] { seedPart0, seedPart1, seedPart2, seedPart3, seedPart4 };
+             var seedBytes = MemoryMarshal.AsBytes<uint>(seedInts);
+diff --git a/AssetStudio/LZ4/LZ4Inv.cs b/AssetStudio/LZ4/LZ4Inv.cs
+index 042fea2..a7fe492 100644
+--- a/AssetStudio/LZ4/LZ4Inv.cs
++++ b/AssetStudio/LZ4/LZ4Inv.cs
+@@ -4,6 +4,16 @@ namespace AssetStudio;
+ public class LZ4Inv : LZ4
+ {
+     public new static LZ4Inv Instance => new();
+-    protected override (int encCount, int litCount) GetLiteralToken(ReadOnlySpan<byte> cmp, ref int cmpPos) => ((cmp[cmpPos] >> 4) & 0xf, (cmp[cmpPos++] >> 0) & 0xf);
++
++    protected override (int encCount, int litCount) GetLiteralToken(ReadOnlySpan<byte> cmp, ref int cmpPos)
++    {
++        var val = cmp[cmpPos++];
++        var lit = val & 0b00110011;
++        var enc = val & 0b11001100;
++        enc >>= 2;
++
++        return ((enc & 0b11) | enc >> 2, (lit & 0b11) | lit >> 2);
++    }
++
+     protected override int GetChunkEnd(ReadOnlySpan<byte> cmp, ref int cmpPos) => cmp[cmpPos++] << 8 | cmp[cmpPos++] << 0;
+ }
+\ No newline at end of file

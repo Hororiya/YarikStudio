@@ -11,11 +11,11 @@ namespace AssetStudio
             Logger.Verbose($"Attempting to decrypt block with FairGuard encryption...");
 
             var encryptedOffset = 0;
-            var encryptedSize = bytes.Length > 0x500 ? 0x500 : bytes.Length;
+            var encryptedSize = Math.Min(0x500, bytes.Length);
 
             if (encryptedSize < 0x20)
             {
-                Logger.Verbose($"block size is less that minimum, skipping...");
+                Logger.Verbose("block size is less that minimum, skipping...");
                 return;
             }
 
@@ -27,11 +27,20 @@ namespace AssetStudio
                 encrypted[i] ^= 0xA6;
             }
 
+            // old
+            /*
             var seedPart0 = (uint)(encryptedInts[2] ^ 0x1274CBEC ^ encryptedInts[6] ^ 0x3F72EAF3);
             var seedPart1 = (uint)(encryptedInts[3] ^ 0xBE482704 ^ encryptedInts[0] ^ encryptedSize);
             var seedPart2 = (uint)(encryptedInts[1] ^ encryptedSize ^ encryptedInts[5] ^ 0x753BDCAA);
             var seedPart3 = (uint)(encryptedInts[0] ^ 0x82C57E3C ^ encryptedInts[7] ^ 0xE3D947D3);
             var seedPart4 = (uint)(encryptedInts[4] ^ 0x6F2A7347 ^ encryptedInts[7] ^ 0x4736C714);
+            */
+
+            var seedPart0 = (uint)(encryptedInts[2] ^ encryptedInts[6] ^ 0x226a61b9);
+            var seedPart1 = (uint)(encryptedInts[3] ^ encryptedInts[0] ^ 0x7a39d018 ^ encryptedSize);
+            var seedPart2 = (uint)(encryptedInts[1] ^ encryptedInts[5] ^ 0x18f6d8aa ^ encryptedSize);
+            var seedPart3 = (uint)(encryptedInts[0] ^ encryptedInts[7] ^ 0xaa255fb1);
+            var seedPart4 = (uint)(encryptedInts[4] ^ encryptedInts[7] ^ 0xf78dd8eb);
 
             var seedInts = new uint[] { seedPart0, seedPart1, seedPart2, seedPart3, seedPart4 };
             var seedBytes = MemoryMarshal.AsBytes<uint>(seedInts);
