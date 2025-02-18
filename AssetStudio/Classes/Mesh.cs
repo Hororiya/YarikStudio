@@ -147,11 +147,6 @@ namespace AssetStudio
                 for (int i = 0; i < m_ChannelsSize; i++)
                 {
                     m_Channels.Add(new ChannelInfo(reader));
-
-                    ////Kh0n5u Debug2
-                    //if (i == 1){
-                    //    m_Channels[i].dimension = 3;
-                    //}
                 }
             }
 
@@ -825,12 +820,6 @@ namespace AssetStudio
                         {
                             m_Channel.dimension = 4;
                         }
-                        ////Kh0n5u Debug4
-                        //if (reader.Game.Type.IsArknightsEndfield() && chn == 1)
-                        //{
-                        //    m_Channel.dimension = 3;
-                        //}
-
                         var vertexFormat = MeshHelper.ToVertexFormat(m_Channel.format, version);
                         var componentByteSize = (int)MeshHelper.GetFormatSize(vertexFormat);
                         var componentBytes = new byte[m_VertexCount * m_Channel.dimension * componentByteSize];
@@ -859,7 +848,6 @@ namespace AssetStudio
                         float[] componentsFloatArray = null;
                         if (reader.Game.Type.IsArknightsEndfield() && chn == 1)
                         {
-                            //componentsFloatArray = MeshHelper.BytesToFloatArray(componentBytes, vertexFormat);
                             componentsFloatArray = MeshHelper.DecompressEndfieldNormal(componentBytes,vertexFormat);
                         }
                         else
@@ -878,22 +866,7 @@ namespace AssetStudio
                                     m_Vertices = componentsFloatArray;
                                     break;
                                 case 1: //kShaderChannelNormal
-                                    //Kh0n5u Debug3
-                                    //if (reader.Game.Type.IsArknightsEndfield())
-                                    //{
-                                    //    float[] m_Vertices_zero = new float[m_VertexCount * 3];
-                                    //    for (int i = 0; i < m_VertexCount; i++)
-                                    //    {
-                                    //        m_Vertices_zero[i * 3] = 0.0f; 
-                                    //        m_Vertices_zero[i * 3 + 1] = 0.0f;
-                                    //        m_Vertices_zero[i * 3 + 2] = 1.0f;
-                                    //    }
-                                    //    m_Normals = m_Vertices_zero;
-                                    //}
-                                    //else
-                                    //{
-                                        m_Normals = componentsFloatArray;
-                                    //}
+                                    m_Normals = componentsFloatArray;
                                     break;
                                 case 2: //kShaderChannelTangent
                                     m_Tangents = componentsFloatArray;
