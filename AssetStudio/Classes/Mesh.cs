@@ -1505,7 +1505,7 @@ namespace AssetStudio
             return result;
         }
 
-        public static float[] DecompressEndfieldNormal(this byte[] inputBytes, VertexFormat format) // 8bits per component
+        public static float[] DecompressEndfieldNormal(this byte[] inputBytes, VertexFormat format) // 10bits per component
         {
             var size = MeshHelper.GetFormatSize(format);
             var len = inputBytes.Length / size;
@@ -1590,10 +1590,6 @@ namespace AssetStudio
                 result[i * 3] = r2x;
                 result[i * 3 + 1] = r2y;
                 result[i * 3 + 2] = r2z;
-                //result[i * 3] = 0;
-                //result[i * 3 + 1] = 0;
-                //result[i * 3 + 2] = 1;
-
             }
             return result;
         }
